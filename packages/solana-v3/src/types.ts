@@ -1,0 +1,14 @@
+import type{Address}from '@solana/kit';
+export type Bundle=[number,number,number];
+export type Seat={owner:Address;session:Address;expires:bigint;epoch:number;quota:number;actionNonce:bigint;offerNonce:number;ready:boolean;planningReady:boolean;resources:Bundle;reserved:Bundle;support:number;delivered:number;forfeited:boolean;seal:boolean;bound:number;offerCount:number};
+export type Offer={status:number;kind:number;maker:number;taker:number;provider:number;action:number;delivery:number;nonce:number;stage:number;gives:[Bundle,Bundle];reserve:[Bundle,Bundle];jobSlot:number};
+export type JobReceipt={slot:number;provider:number;nonce:number;executed:boolean;owner:Address};
+export type Summary={complete:boolean;hull:number;route:number;threat:number;guard:number;objective:boolean;flags:number;actions:number[];routes:number[];deliveries:number[];missing:number;rejected:number[];inputs:Bundle[];outputs:Bundle[];resources:Bundle[];support:number[];delivered:number[];forfeited:number;deals:Offer[];dealCount:number;jobs:JobReceipt[];revision:bigint;escortGoal:number;escortProgress:number;pledged:number[];voluntary:number[];pricesPaid:Bundle[];pricesReceived:Bundle[]};
+export type GameV3={creator:Address;nonce:Uint8Array;bump:number;rulesHash:Uint8Array;contentHash:Uint8Array;count:number;phase:number;stage:number;hull:number;deadline:bigint;revision:bigint;roster:number;npcMask:number;eligibleMask:number;mission:Address;missionRoster:number;flags:number;seats:Seat[];offers:Offer[];deals:Offer[];dealCount:number;commitments:Uint8Array[];committed:number;revealed:number;actions:number[];routes:number[];deliveries:number[];history:Summary[];scores:number[];arrived:boolean};
+export type Mission={game:Address;sponsor:Address;bump:number;roster:number;rulesHash:Uint8Array;contentHash:Uint8Array;eligibleMask:number;fundedAt:bigint;slots:{status:number;provider:number;nonce:number;owner:Address}[]};
+export type Terms={taker:number;provider:number;kind:number;action:number;delivery:number;offerNonce:number;gives:[Bundle,Bundle];jobSlot:number};
+export type Auth={seat:number;owner:Address;nonce:bigint;epoch:number;stage:number};
+export type Move={action:number;route:number;delivery:number};
+export type PreparedMove=Move&{match:Address;stage:number;owner:Address;seat:number;salt:Uint8Array;commitment:Uint8Array;workContext:Uint8Array};
+export type ConfigConsent={match:Address;roster:number;hash:Uint8Array};
+export type OfferConsent={match:Address;stage:number;maker:number;taker:number;provider:number;nonce:number;jobSlot:number;hash:Uint8Array;offer:Offer};

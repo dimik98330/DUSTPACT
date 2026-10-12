@@ -1,0 +1,10 @@
+[package]
+name = "dustpact-rules-v2"
+version = "0.2.0"
+edition = "2021"
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+no-wasm-exports = []

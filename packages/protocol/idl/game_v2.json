@@ -1,0 +1,1442 @@
+{
+  "address": "7Fs272UohH4jF53fwsdVk3E9t4KuDptdn6DcFyxbuARd",
+  "metadata": {
+    "name": "game_v2",
+    "version": "0.2.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "create_match",
+      "discriminator": [
+        107,
+        2,
+        184,
+        145,
+        70,
+        142,
+        17,
+        165
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "nonce",
+          "type": {
+            "array": [
+              "u8",
+              16
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "join_match",
+      "discriminator": [
+        244,
+        8,
+        47,
+        130,
+        192,
+        59,
+        179,
+        44
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "leave_lobby",
+      "discriminator": [
+        197,
+        5,
+        184,
+        149,
+        30,
+        42,
+        230,
+        118
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "configure_mission",
+      "discriminator": [
+        218,
+        61,
+        20,
+        58,
+        89,
+        248,
+        89,
+        0
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "npc_mask",
+          "type": "u8"
+        },
+        {
+          "name": "enabled",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "set_ready",
+      "discriminator": [
+        105,
+        78,
+        7,
+        162,
+        181,
+        167,
+        186,
+        43
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "roster",
+          "type": "u32"
+        },
+        {
+          "name": "config_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "start_match",
+      "discriminator": [
+        100,
+        246,
+        223,
+        181,
+        176,
+        101,
+        255,
+        19
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "authorize_session",
+      "discriminator": [
+        187,
+        218,
+        251,
+        161,
+        99,
+        40,
+        34,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "key",
+          "type": "pubkey"
+        },
+        {
+          "name": "expires",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "revoke_session",
+      "discriminator": [
+        86,
+        92,
+        198,
+        120,
+        144,
+        2,
+        7,
+        194
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_offer",
+      "discriminator": [
+        237,
+        233,
+        192,
+        168,
+        248,
+        7,
+        249,
+        241
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "terms",
+          "type": {
+            "defined": {
+              "name": "Terms"
+            }
+          }
+        },
+        {
+          "name": "config_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "cancel_offer",
+      "discriminator": [
+        92,
+        203,
+        223,
+        40,
+        92,
+        89,
+        53,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "offer_nonce",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "accept_offer",
+      "discriminator": [
+        227,
+        82,
+        234,
+        131,
+        1,
+        18,
+        48,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "maker",
+          "type": "u8"
+        },
+        {
+          "name": "offer_nonce",
+          "type": "u32"
+        },
+        {
+          "name": "terms_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "accept_sponsored",
+      "discriminator": [
+        76,
+        221,
+        135,
+        74,
+        51,
+        12,
+        52,
+        189
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        },
+        {
+          "name": "mission",
+          "writable": true
+        },
+        {
+          "name": "vault_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "maker",
+          "type": "u8"
+        },
+        {
+          "name": "offer_nonce",
+          "type": "u32"
+        },
+        {
+          "name": "terms_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "set_plan_ready",
+      "discriminator": [
+        76,
+        163,
+        93,
+        102,
+        237,
+        243,
+        57,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "ready",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "commit_move",
+      "discriminator": [
+        27,
+        16,
+        69,
+        212,
+        175,
+        110,
+        123,
+        189
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "commitment",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "reveal_move",
+      "discriminator": [
+        30,
+        133,
+        198,
+        26,
+        106,
+        44,
+        55,
+        149
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "auth",
+          "type": {
+            "defined": {
+              "name": "Auth"
+            }
+          }
+        },
+        {
+          "name": "action",
+          "type": "u8"
+        },
+        {
+          "name": "route",
+          "type": "u8"
+        },
+        {
+          "name": "delivery",
+          "type": "u16"
+        },
+        {
+          "name": "salt",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "advance_phase",
+      "discriminator": [
+        91,
+        6,
+        51,
+        226,
+        144,
+        243,
+        74,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "stage",
+          "type": "u8"
+        },
+        {
+          "name": "phase",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "resolve_stage",
+      "discriminator": [
+        200,
+        202,
+        165,
+        174,
+        99,
+        213,
+        31,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "stage",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "cancel_expired_lobby",
+      "discriminator": [
+        66,
+        37,
+        43,
+        26,
+        1,
+        1,
+        253,
+        91
+      ],
+      "accounts": [
+        {
+          "name": "game",
+          "writable": true
+        },
+        {
+          "name": "actor",
+          "signer": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "GameV2",
+      "discriminator": [
+        119,
+        151,
+        182,
+        34,
+        113,
+        197,
+        15,
+        160
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Auth",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seat",
+            "type": "u8"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          },
+          {
+            "name": "epoch",
+            "type": "u32"
+          },
+          {
+            "name": "stage",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameV2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "rules_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "content_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "count",
+            "type": "u8"
+          },
+          {
+            "name": "phase",
+            "type": "u8"
+          },
+          {
+            "name": "stage",
+            "type": "u8"
+          },
+          {
+            "name": "hull",
+            "type": "u8"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          },
+          {
+            "name": "roster",
+            "type": "u32"
+          },
+          {
+            "name": "npc_mask",
+            "type": "u8"
+          },
+          {
+            "name": "eligible_mask",
+            "type": "u8"
+          },
+          {
+            "name": "mission",
+            "type": "pubkey"
+          },
+          {
+            "name": "mission_roster",
+            "type": "u32"
+          },
+          {
+            "name": "flags",
+            "type": "u8"
+          },
+          {
+            "name": "seats",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Seat"
+                  }
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "offers",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Offer"
+                  }
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "deals",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Offer"
+                  }
+                },
+                3
+              ]
+            }
+          },
+          {
+            "name": "deal_count",
+            "type": "u8"
+          },
+          {
+            "name": "commitments",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "committed",
+            "type": "u8"
+          },
+          {
+            "name": "revealed",
+            "type": "u8"
+          },
+          {
+            "name": "actions",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "routes",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "deliveries",
+            "type": {
+              "array": [
+                "u16",
+                6
+              ]
+            }
+          },
+          {
+            "name": "history",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "Summary"
+                }
+              }
+            }
+          },
+          {
+            "name": "scores",
+            "type": {
+              "array": [
+                "u32",
+                6
+              ]
+            }
+          },
+          {
+            "name": "arrived",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "JobReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "slot",
+            "type": "u8"
+          },
+          {
+            "name": "provider",
+            "type": "u8"
+          },
+          {
+            "name": "nonce",
+            "type": "u32"
+          },
+          {
+            "name": "executed",
+            "type": "bool"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Offer",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "status",
+            "type": "u8"
+          },
+          {
+            "name": "kind",
+            "type": "u8"
+          },
+          {
+            "name": "maker",
+            "type": "u8"
+          },
+          {
+            "name": "taker",
+            "type": "u8"
+          },
+          {
+            "name": "provider",
+            "type": "u8"
+          },
+          {
+            "name": "action",
+            "type": "u8"
+          },
+          {
+            "name": "delivery",
+            "type": "u16"
+          },
+          {
+            "name": "nonce",
+            "type": "u32"
+          },
+          {
+            "name": "stage",
+            "type": "u8"
+          },
+          {
+            "name": "gives",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "reserve",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "job_slot",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Seat",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "session",
+            "type": "pubkey"
+          },
+          {
+            "name": "expires",
+            "type": "i64"
+          },
+          {
+            "name": "epoch",
+            "type": "u32"
+          },
+          {
+            "name": "quota",
+            "type": "u16"
+          },
+          {
+            "name": "action_nonce",
+            "type": "u64"
+          },
+          {
+            "name": "offer_nonce",
+            "type": "u32"
+          },
+          {
+            "name": "ready",
+            "type": "bool"
+          },
+          {
+            "name": "planning_ready",
+            "type": "bool"
+          },
+          {
+            "name": "resources",
+            "type": {
+              "array": [
+                "u16",
+                3
+              ]
+            }
+          },
+          {
+            "name": "reserved",
+            "type": {
+              "array": [
+                "u16",
+                3
+              ]
+            }
+          },
+          {
+            "name": "support",
+            "type": "u16"
+          },
+          {
+            "name": "delivered",
+            "type": "u16"
+          },
+          {
+            "name": "forfeited",
+            "type": "bool"
+          },
+          {
+            "name": "seal",
+            "type": "bool"
+          },
+          {
+            "name": "bound",
+            "type": "u8"
+          },
+          {
+            "name": "offer_count",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Summary",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "complete",
+            "type": "bool"
+          },
+          {
+            "name": "hull",
+            "type": "u8"
+          },
+          {
+            "name": "route",
+            "type": "u8"
+          },
+          {
+            "name": "threat",
+            "type": "u8"
+          },
+          {
+            "name": "guard",
+            "type": "u8"
+          },
+          {
+            "name": "objective",
+            "type": "bool"
+          },
+          {
+            "name": "flags",
+            "type": "u8"
+          },
+          {
+            "name": "actions",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "routes",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "deliveries",
+            "type": {
+              "array": [
+                "u16",
+                6
+              ]
+            }
+          },
+          {
+            "name": "missing",
+            "type": "u8"
+          },
+          {
+            "name": "rejected",
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "inputs",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "outputs",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "resources",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                6
+              ]
+            }
+          },
+          {
+            "name": "support",
+            "type": {
+              "array": [
+                "u16",
+                6
+              ]
+            }
+          },
+          {
+            "name": "delivered",
+            "type": {
+              "array": [
+                "u16",
+                6
+              ]
+            }
+          },
+          {
+            "name": "forfeited",
+            "type": "u8"
+          },
+          {
+            "name": "deals",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Offer"
+                  }
+                },
+                3
+              ]
+            }
+          },
+          {
+            "name": "deal_count",
+            "type": "u8"
+          },
+          {
+            "name": "jobs",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "JobReceipt"
+                  }
+                },
+                3
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Terms",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "taker",
+            "type": "u8"
+          },
+          {
+            "name": "provider",
+            "type": "u8"
+          },
+          {
+            "name": "kind",
+            "type": "u8"
+          },
+          {
+            "name": "action",
+            "type": "u8"
+          },
+          {
+            "name": "delivery",
+            "type": "u16"
+          },
+          {
+            "name": "offer_nonce",
+            "type": "u32"
+          },
+          {
+            "name": "gives",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u16",
+                    3
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "job_slot",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Phase",
+      "msg": "Wrong phase"
+    },
+    {
+      "code": 6001,
+      "name": "Expired",
+      "msg": "Window expired"
+    },
+    {
+      "code": 6002,
+      "name": "NotReady",
+      "msg": "Roster or plans not ready"
+    },
+    {
+      "code": 6003,
+      "name": "Early",
+      "msg": "Too early"
+    },
+    {
+      "code": 6004,
+      "name": "Invalid",
+      "msg": "Invalid arguments"
+    },
+    {
+      "code": 6005,
+      "name": "Stale",
+      "msg": "Stale nonce, stage or epoch"
+    },
+    {
+      "code": 6006,
+      "name": "Authority",
+      "msg": "Unauthorized owner or session"
+    },
+    {
+      "code": 6007,
+      "name": "Duplicate",
+      "msg": "Duplicate action"
+    },
+    {
+      "code": 6008,
+      "name": "Full",
+      "msg": "No seat, recipe or pact capacity"
+    },
+    {
+      "code": 6009,
+      "name": "Resource",
+      "msg": "Insufficient free resources"
+    },
+    {
+      "code": 6010,
+      "name": "Seal",
+      "msg": "Seal unavailable"
+    },
+    {
+      "code": 6011,
+      "name": "Bound",
+      "msg": "Action already bound"
+    },
+    {
+      "code": 6012,
+      "name": "Commitment",
+      "msg": "Commitment mismatch"
+    },
+    {
+      "code": 6013,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6014,
+      "name": "Consent",
+      "msg": "Reviewed configuration or terms changed"
+    },
+    {
+      "code": 6015,
+      "name": "Mission",
+      "msg": "Mission or paid slot mismatch"
+    }
+  ]
+}

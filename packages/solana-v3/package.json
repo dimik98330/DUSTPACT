@@ -1,0 +1,14 @@
+{
+  "name": "@dustpact/solana-v3",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@solana/kit": "8.4.0",
+    "@solana/sysvars": "8.4.0"
+  },
+  "scripts": {
+    "test": "tsx --test test/*.test.ts"
+  }
+}

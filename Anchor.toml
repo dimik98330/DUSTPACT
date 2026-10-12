@@ -1,0 +1,11 @@
+[features]
+resolution = true
+skip-lint = false
+[programs.localnet]
+game_v3 = "EEs4JyRG3Cs84rtYq2rupywf6YHDW426oACzspsHE7Mm"
+pact_vault_v3 = "E6rQv7ohsEL1XtCySvQodTRiEY2sdaMiwDoJdktaiseA"
+game_v2 = "7Fs272UohH4jF53fwsdVk3E9t4KuDptdn6DcFyxbuARd"
+pact_vault = "FdmDeHDFdxrraqSXdprzDPieSLZMbQCkEPr5rjokRtBR"
+[provider]
+cluster = "http://127.0.0.1:19809"
+wallet = ".runtime/local-test-wallet.json"

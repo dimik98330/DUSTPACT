@@ -1,0 +1,6 @@
+{
+  "fixture": "Public identifiers of the retained local native campaign; not a recreated ledger or current deployment.",
+  "rpc": "http://127.0.0.1:19199",
+  "genesis": "C4W3Z1mkpXLm7gfVuCXnsjmxNmRAsnmDgJ26FWZA1iMj",
+  "match": "CyVWqjRr7Qy2HXK9RHjatpbWqGtj8jzEmM4SnoWaEwcG"
+}

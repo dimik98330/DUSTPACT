@@ -1,0 +1,58 @@
+{
+  "name": "dustpact",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @dustpact/web",
+    "build": "node scripts/build-web-clients.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "preview": "npm run preview --workspace @dustpact/web",
+    "recovery:dev": "npm run dev --workspace @dustpact/recovery",
+    "backend:api": "npm run v3:api",
+    "backend:indexer": "npm run v3:indexer",
+    "backend:keeper": "npm run v3:keeper",
+    "backend:sponsor": "npm run v3:sponsor",
+    "backend:migrate": "npm run migrate --workspace @dustpact/backend",
+    "backend:rebuild": "npm run v3:rebuild",
+    "backend:test": "npm test --workspace @dustpact/backend",
+    "backend:typecheck": "npm run typecheck --workspace @dustpact/backend",
+    "v2:api": "node --env-file-if-exists=.env --import tsx services/backend/src/v2-main.ts",
+    "v2:indexer": "node --env-file-if-exists=.env --import tsx services/backend/src/v2-worker-main.ts indexer",
+    "v2:rebuild": "node --env-file-if-exists=.env --import tsx services/backend/src/v2-worker-main.ts rebuild",
+    "v2:test": "tsx --test tests/v2-*.test.ts packages/solana-v2/test/*.test.ts",
+    "v2:keeper": "node --env-file-if-exists=.env --import tsx services/backend/src/v2-worker-main.ts keeper",
+    "v3:api": "node --env-file-if-exists=.env --import tsx services/backend/src/v3-main.ts",
+    "v3:indexer": "node --env-file-if-exists=.env --import tsx services/backend/src/v3-worker-main.ts indexer",
+    "v3:keeper": "node --env-file-if-exists=.env --import tsx services/backend/src/v3-worker-main.ts keeper",
+    "v3:rebuild": "node --env-file-if-exists=.env --import tsx services/backend/src/v3-worker-main.ts rebuild",
+    "v3:sponsor": "node --env-file-if-exists=.env --import tsx services/backend/src/v3-fees-main.ts",
+    "v3:test": "tsx --test tests/v3-*.test.ts",
+    "demo": "node scripts/demo.mjs",
+    "setup": "npm ci",
+    "build:wasm": "node scripts/build-wasm.mjs",
+    "build:programs": "bash scripts/build-programs.sh",
+    "localnet": "node scripts/localnet.mjs",
+    "test:sdk": "tsx --test packages/solana-v2/test/*.test.ts",
+    "test:ui": "tsx --test apps/web/src/v2/*.test.ts",
+    "test:rust": "cargo test -p dustpact-rules-v2 -p dustpact-rules-v3 --lib --locked",
+    "test:native": "cargo test --workspace --lib --tests --locked -- --test-threads=1",
+    "localnet:tokens": "node scripts/localnet-tokens.mjs",
+    "localnet:test": "node --test scripts/localnet-fixture.test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.0",
+    "prettier": "^3.6.2",
+    "tsx": "4.20.6",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

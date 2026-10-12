@@ -1,0 +1,16 @@
+node_modules/
+dist/
+target/
+.env
+.env.*
+!.env.example
+*.log
+.runtime/
+test-results/
+playwright-report/
+*.pem
+*.seed
+*-keypair.json
+credentials.json
+.DS_Store
+Thumbs.db

@@ -1,0 +1,25 @@
+{
+  "name": "@dustpact/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "api": "node --env-file-if-exists=../../.env --import tsx src/v3-main.ts",
+    "indexer": "node --env-file-if-exists=../../.env --import tsx src/v3-worker-main.ts indexer",
+    "keeper": "node --env-file-if-exists=../../.env --import tsx src/v3-worker-main.ts keeper",
+    "sponsor": "node --env-file-if-exists=../../.env --import tsx src/v3-fees-main.ts",
+    "migrate": "node --env-file-if-exists=../../.env --import tsx src/v3-db-cli.ts migrate",
+    "rebuild": "node --env-file-if-exists=../../.env --import tsx src/v3-worker-main.ts rebuild",
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@solana/kit": "8.4.0",
+    "pg": "8.23.1",
+    "ws": "8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "@types/ws": "8.18.2"
+  }
+}

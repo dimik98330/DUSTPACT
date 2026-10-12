@@ -1,0 +1,10 @@
+[package]
+name = "dustpact-rules-v3"
+version = "0.3.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+dustpact-rules-v2 = { path = "../rules-v2", features = ["no-wasm-exports"] }

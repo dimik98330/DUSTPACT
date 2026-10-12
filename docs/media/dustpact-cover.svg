@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title description">
+<title id="title">DUSTPACT</title><desc id="description">One caravan. Different interests. A warm desert expedition with verifiable pacts.</desc>
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#f7f4ed"/><stop offset="1" stop-color="#eee8da"/></linearGradient></defs>
+<rect width="1200" height="360" rx="16" fill="url(#sky)"/>
+<path d="M724 360 780 128 851 98 891 360Z" fill="#e6dcc5"/><path d="m780 128 71-30-19 262h-108Z" fill="#dcd0b2"/>
+<path d="m1004 360 46-195 62-20 88 215Z" fill="#ddcfac"/><path d="m1050 165 62-20-14 215h-94Z" fill="#cdbb91"/>
+<path d="M705 360c56-88 92-29 166-81s121-17 150-91" fill="none" stroke="#bdad82" stroke-width="34"/>
+<path d="M705 360c56-88 92-29 166-81s121-17 150-91" fill="none" stroke="#f1c36c" stroke-width="3" stroke-dasharray="5 9"/>
+<g fill="#84917f"><path d="m916 233-4 32h9Z"/><path d="m1138 231-4 32h9Z"/><path d="m970 302-5 35h11Z"/></g>
+<g transform="translate(855 212)"><ellipse cx="46" cy="68" rx="70" ry="11" fill="#cbbb95" opacity=".6"/><path d="m-10 24 89-10 20 21-89 12Z" fill="#7d6440"/><path d="m10 47 89-12v21L10 67Z" fill="#9c7c50"/><path d="m-10 24 20 23v20L-10 45Z" fill="#6b5639"/><circle cx="24" cy="64" r="13" fill="#424d3d"/><circle cx="24" cy="64" r="5" fill="#d8c9a1"/><circle cx="83" cy="54" r="13" fill="#424d3d"/><circle cx="83" cy="54" r="5" fill="#d8c9a1"/><path d="m-8 21 8-43 37-10 51 10 8 35-87 13Z" fill="#e8c77e"/><path d="m0-22 37-10 51 10-4 15-51-11L-4-8Z" fill="#f5dc9c"/><path d="m37-32-4 50 51-5 4-35Z" fill="#ceb374"/><path d="M-15 35-43 44" stroke="#7d6440" stroke-width="5"/></g>
+<g transform="translate(66 54)" fill="none" stroke="#80510d" stroke-width="2"><circle cx="15" cy="15" r="14"/><path d="m20 9-3 9-9 3 3-9Z" fill="#f1c36c"/></g>
+<text x="112" y="76" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#636965">COOPERATE · NEGOTIATE · DELIVER</text>
+<text x="64" y="185" font-family="Georgia,serif" font-size="91" letter-spacing="-4" fill="#242a29">DUSTPACT</text>
+<text x="70" y="229" font-family="Arial,sans-serif" font-size="25" fill="#52614a">One caravan. Different interests.</text>
+<path d="M70 266h584" stroke="#cbd2bf"/>
+<g font-family="Arial,sans-serif" font-size="14" fill="#636965"><text x="70" y="300">4–6 travelers</text><text x="230" y="300">6 distinct encounters</text><text x="444" y="300">Verifiable pacts on Solana</text></g>
+<g fill="#52614a" stroke="#f7f4ed" stroke-width="3"><circle cx="799" cy="308" r="6"/><circle cx="904" cy="266" r="6"/><circle cx="1019" cy="194" r="6"/></g>
+</svg>

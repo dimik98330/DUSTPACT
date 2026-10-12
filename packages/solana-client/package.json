@@ -1,0 +1,1 @@
+{"name":"@dustpact/solana-client","version":"0.1.0","private":true,"type":"module","exports":"./src/index.ts","dependencies":{"@solana/kit":"8.4.0","@solana/sysvars":"8.4.0","@solana/program-client-core":"8.4.0","@solana/kit-plugin-rpc":"0.19.0"}}

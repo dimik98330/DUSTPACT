@@ -1,0 +1,95 @@
+.language-toggle {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  color: inherit;
+  font-family: Manrope, Arial, sans-serif;
+}
+.language-toggle > legend {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.language-toggle > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.language-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  min-width: 98px;
+  padding: 10px 16px;
+  font:
+    600 16px/1.3 Manrope,
+    Arial,
+    sans-serif;
+  border: 1px solid #97aa9f;
+  border-radius: 8px;
+  background: #20372f;
+  color: #f7f1df;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.language-toggle button[aria-pressed="true"] {
+  background: #e7ad62;
+  border-color: #e7ad62;
+  color: #151b1b;
+}
+.language-toggle button:focus-visible {
+  outline: 3px solid #f2ce92;
+  outline-offset: 3px;
+}
+.world-intro .language-toggle {
+  margin: 20px 0;
+}
+.world-modal .language-toggle,
+.world-wallet-settings .language-toggle {
+  margin: 20px 0;
+}
+.game-wallet-bar > .language-toggle > legend {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.game-wallet-bar > .language-toggle button {
+  min-width: 88px;
+  min-height: 44px;
+}
+@media (max-width: 640px) {
+  .game-wallet-bar > .language-toggle {
+    width: 100%;
+  }
+  .language-toggle button {
+    min-width: 104px;
+  }
+  .world-intro .language-toggle > div {
+    justify-content: center;
+  }
+  .world-intro .language-toggle {
+    text-align: center;
+  }
+  .game-wallet-bar {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .language-toggle button {
+    transition:
+      background-color 140ms ease,
+      border-color 140ms ease;
+  }
+  .language-toggle button:not([aria-pressed="true"]):hover {
+    background: #2a463c;
+    border-color: #e7ad62;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .language-toggle button {
+    transition: none !important;
+    animation: none !important;
+  }
+}

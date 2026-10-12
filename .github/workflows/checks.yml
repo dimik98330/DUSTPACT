@@ -1,0 +1,42 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-and-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Typecheck application
+        run: npm run typecheck
+      - name: Typecheck backend
+        run: npm run backend:typecheck
+      - name: Run source tests
+        run: npm test
+      - name: Check local token fixture guards
+        run: npm run localnet:test
+      - name: Build game and recovery clients
+        run: npm run build
+      - name: Set up reviewed host Rust
+        run: rustup toolchain install 1.91.0 --profile minimal
+      - name: Test shared Rust rules
+        run: npm run test:rust
+        env:
+          RUSTUP_TOOLCHAIN: "1.91.0"

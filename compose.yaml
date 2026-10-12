@@ -1,0 +1,21 @@
+name: dustpact-public
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: dustpact
+      # Local development credentials only. Do not expose this database publicly.
+      POSTGRES_PASSWORD: dustpact_dev_only
+      POSTGRES_DB: dustpact_v3
+    ports:
+      - "127.0.0.1:15439:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./.docker/init-databases.sql:/docker-entrypoint-initdb.d/01-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dustpact -d dustpact_v3"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  postgres-data:

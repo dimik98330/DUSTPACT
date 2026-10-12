@@ -1,0 +1,11 @@
+import {address} from '@solana/kit';
+export const PROGRAM_V2=address('7Fs272UohH4jF53fwsdVk3E9t4KuDptdn6DcFyxbuARd');
+export const VAULT_PROGRAM=address('FdmDeHDFdxrraqSXdprzDPieSLZMbQCkEPr5rjokRtBR');
+export const USDC_MINT=address('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU');
+export const TOKEN=address('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+export const ATA_PROGRAM=address('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+export const SYSTEM=address('11111111111111111111111111111111');
+export const LOCAL_RPC_V2='http://127.0.0.1:19809';
+export const JOB_AMOUNT=10_000_000n, MISSION_AMOUNT=20_000_000n;
+export const RULES_HASH=Uint8Array.from([72,144,212,167,222,49,168,175,4,177,81,77,97,13,212,124,150,33,245,22,244,57,40,156,185,38,201,86,192,61,15,33]);
+export const CONTENT_HASH=Uint8Array.from(RULES_HASH);
