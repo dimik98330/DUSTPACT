@@ -39,5 +39,5 @@ test('Buying a toolkit and doing the work personally is a distinct legal bridge 
  assert.equal(c.snapshot().seats[0].resources[1],1);assert.equal(c.snapshot().seats[0].bound,null);
  assert.equal((await c.planReady({action:3,route:0,delivery:0})).ok,true);
  const end=c.snapshot();assert.equal(end.bridgeOpen,true);assert.equal(end.history[1].actions[0],3);assert.equal(end.history[1].inputs?.[0][1],1);assert.equal(end.seats[0].support,2);
- const text=renderToStaticMarkup(createElement(OutcomeCard,{game:end,receipt:end.history[1],language:'ru',open:true})).replace(/<[^>]*>/g,'');assert.match(text,/Мой вклад за встречу: \+2/);c.dispose();
+ const text=renderToStaticMarkup(createElement(OutcomeCard,{game:end,receipt:end.history[1],language:'ru',open:true})).replace(/<[^>]*>/g,'');assert.match(text,/Вклад за встречу\+2/);c.dispose();
 });
