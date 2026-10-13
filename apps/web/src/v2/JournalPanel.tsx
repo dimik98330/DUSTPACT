@@ -13,9 +13,10 @@ import {
   ScanLine,
   Clock,
   ArrowRight,
-  FileCheck2,
   Info,
+  ExternalLink,
 } from "lucide-react";
+import { GAME_PROGRAM, explorerAccountUrl } from "./solana-links";
 import type { GameView } from "./model";
 import { expeditionDebrief as debriefV2 } from "../../../../packages/engine/src/v2-debrief";
 import { expeditionDebrief as debriefV3 } from "../../../../packages/engine/src/v3-debrief";
@@ -87,15 +88,6 @@ export default function JournalPanel({
             );
           })}
         </nav>
-        <div className="jr-index-note">
-          <Info size={18} />
-          <p>
-            {say(
-              "Выбери встречу: увидишь решения игроков, оставшиеся запасы и исполненные пакты.",
-              "Select an encounter to see player decisions, remaining supplies and executed pacts.",
-            )}
-          </p>
-        </div>
       </aside>
       <div className="jr-detail">
         {!e || !r ? (
@@ -126,16 +118,7 @@ export default function JournalPanel({
                 </span>
                 <h3>{words(language, [...e.name])}</h3>
               </div>
-              <span
-                className={`jr-proof-label ${r.proof === "finalized" ? "jr-finalized" : ""}`}
-              >
-                <FileCheck2 size={16} />
-                {r.proof === "practice"
-                  ? say("Учебный расчёт", "Learning simulation")
-                  : r.proof === "finalized"
-                    ? say("Solana · окончательно", "Solana · finalized")
-                    : say("Solana · подтверждено", "Solana · confirmed")}
-              </span>
+
             </header>
             <PanelNav<"outcome" | "players" | "pacts" | "proof">
               value={view}
@@ -589,6 +572,37 @@ export default function JournalPanel({
                       label={say("Адрес матча", "Match address")}
                       language={language}
                     />
+                  )}
+                  {g.network !== "practice" && (
+                    <div className="jr-explorer-links">
+                      <a
+                        href={explorerAccountUrl(g.match, g.network) ?? "#"}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <ExternalLink size={16} />
+                        {say(
+                          "Матч в Solana Explorer",
+                          "Match in Solana Explorer",
+                        )}
+                      </a>
+                      <a
+                        href={
+                          explorerAccountUrl(
+                            GAME_PROGRAM[g.version],
+                            g.network,
+                          ) ?? "#"
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <ExternalLink size={16} />
+                        {say(
+                          "Программа игры в Explorer",
+                          "Game program in Explorer",
+                        )}
+                      </a>
+                    </div>
                   )}
                   {r.settlementKey && g.network !== "practice" && (
                     <CopyField

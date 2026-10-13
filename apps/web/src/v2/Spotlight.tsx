@@ -8,7 +8,7 @@ export default function Spotlight({target,focusTarget,title,children,index,total
  const ru=language!=='en';
  useLayoutEffect(()=>{
   let frame=0,needsFocus=true;const el=document.querySelector<HTMLElement>(target);
-  if(el?.closest('.v2-modal'))el.scrollIntoView({block:'nearest',behavior:'instant'});
+  if(el?.closest('.v2-modal,.dp-sheet'))el.scrollIntoView({block:'start',behavior:'instant'});
   const host=document.querySelector<HTMLElement>('.v2-game');
   const measure=()=>{
    if(needsFocus){
@@ -21,8 +21,8 @@ export default function Spotlight({target,focusTarget,title,children,index,total
    host?.style.setProperty('--v2-guide-height',`${Math.ceil(ch)}px`);
    const targetEl=document.querySelector<HTMLElement>(target),r=targetEl?.getBoundingClientRect(),h=innerHeight,w=innerWidth;
    if(!r||r.width===0||r.height===0){setBox(null);setCardTop(undefined);return;}
-   const container=targetEl?.closest('.v2-modal')?.getBoundingClientRect();
-   const b={left:Math.max(6,r.left-6),right:Math.min(w-6,r.right+6),top:Math.max(6,r.top-6,container?.top??0),bottom:Math.min(h-6,r.bottom+6,container?.bottom??h)};
+   const container=targetEl?.closest('.v2-modal,.dp-sheet')?.getBoundingClientRect();
+   const b={left:Math.max(6,r.left-6),right:Math.min(w-6,r.right+6),top:Math.min(h-6,Math.max(6,r.top-6,container?.top??0)),bottom:Math.max(6,Math.min(h-6,r.bottom+6,container?.bottom??h))};
    setBox(b);
    setCardTop(b.bottom+12+ch<h-12?b.bottom+12:b.top-ch-12>12?b.top-ch-12:undefined);
   };

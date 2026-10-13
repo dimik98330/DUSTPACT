@@ -16,7 +16,7 @@ import { expeditionDebrief as debriefV3 } from "../../../../packages/engine/src/
 import type { GameView } from "./model";
 import { words } from "./content";
 import { PanelNav } from "./PanelParts";
-import ReceiptContracts from "./ReceiptContracts";
+import ResultEncounter from "./ResultEncounter";
 export default function ResultPanel({
   game: g,
   language,
@@ -67,7 +67,7 @@ export default function ResultPanel({
       : []),
   ];
   return (
-    <div className="dp-results">
+    <div className="dp-results play-results">
       <div className="dp-result-layout">
         <aside className="dp-result-summary">
           <div
@@ -82,14 +82,8 @@ export default function ResultPanel({
               </span>
               <h3>
                 {g.arrived
-                  ? say(
-                    "Караван прибыл",
-                      "The caravan reached the city",
-                    )
-                  : say(
-                    "Караван не дошёл",
-                      "The expedition did not succeed",
-                    )}
+                  ? say("Караван прибыл", "The caravan reached the city")
+                  : say("Караван не дошёл", "The expedition did not succeed")}
               </h3>
               {g.arrived ? (
                 <p>
@@ -114,7 +108,7 @@ export default function ResultPanel({
               )}
             </div>
             {!g.arrived && !causes.length && (
-            <button disabled={busy} onClick={onRefresh}>
+              <button disabled={busy} onClick={onRefresh}>
                 {say("Обновить состояние", "Refresh state")}
               </button>
             )}
@@ -287,68 +281,12 @@ export default function ResultPanel({
                 ))}
               </nav>
               {e && receipt ? (
-                <article className="dp-card dp-encounter-detail">
-                  <span className="dp-kicker">
-                    {say(`Встреча ${e.stage + 1}`, `Encounter ${e.stage + 1}`)}
-                  </span>
-                  <h3>{words(language, [...e.headline])}</h3>
-                  <p className="dp-safe-note">
-                    <Shield size={20} />
-                    {say("Прочность", "Hull")}: {e.hullBefore} → {e.hullAfter}
-                  </p>
-                  {e.facts.map((f, i) => (
-                    <p key={i}>{words(language, [...f])}</p>
-                  ))}
-                  {e.workers.length > 0 && (
-                    <p>
-                      <b>{say("Ремонт", "Repair")}: </b>
-                      {e.workers.map((i) => g.seats[i].name).join(", ")}
-                    </p>
-                  )}
-                  {e.producers.length > 0 && (
-                    <p>
-                      <b>{say("Добыча", "Extraction")}: </b>
-                      {e.producers.map((i) => g.seats[i].name).join(", ")}
-                    </p>
-                  )}
-                  {e.missingSeats.length > 0 && (
-                    <p className="dp-alert">
-                      {say("Не раскрыли план", "Missing reveal")}:{" "}
-                      {e.missingSeats.map((i) => g.seats[i].name).join(", ")}.{" "}
-                      {say(
-                        "Принятые обязательства проверяются отдельно.",
-                        "Accepted obligations are checked separately.",
-                      )}
-                    </p>
-                  )}
-                  <details className="dp-details">
-                    <summary>
-                      {say(
-                        `Договоры в этой встрече: ${e.pacts.length}`,
-                        `Pacts in this encounter: ${e.pacts.length}`,
-                      )}
-                    </summary>
-                    {e.pacts.length ? (
-                      <ReceiptContracts
-                        receipt={receipt}
-                        game={g}
-                        language={language}
-                      />
-                    ) : (
-                      <p>
-                        {say(
-                          "Принятых договоров не было. Исполнены свободные действия по правилам встречи.",
-                          "No accepted pacts. Unbound actions resolved under the encounter rules.",
-                        )}
-                      </p>
-                    )}
-                  </details>
-                  <p className="dp-caption">
-                    {e.proof === "practice"
-                      ? "Rust/Wasm · OFFCHAIN"
-                      : `Solana · ${e.proof.toUpperCase()}`}
-                  </p>
-                </article>
+                <ResultEncounter
+                  encounter={e}
+                  receipt={receipt}
+                  game={g}
+                  language={language}
+                />
               ) : (
                 <section className="dp-card">
                   <p>
@@ -365,18 +303,20 @@ export default function ResultPanel({
       </div>
       <div className="dp-result-actions">
         <div>
-          <p>
-            {g.network === "practice"
-              ? say(
-                  "Учебная экспедиция: без токенов и выплат.",
-                  "Learning expedition: no tokens or payouts.",
-                )
-              : say(
-                  "Выполненная TEST-работа оплачивается отдельно от личного счёта.",
-                  "Completed TEST work is paid separately from personal scores.",
-                )}
-          </p>
-          {g.network !== "practice" && (
+          {(g.network === "practice" || g.vault?.funded) && (
+            <p>
+              {g.network === "practice"
+                ? say(
+                    "Учебная экспедиция: без токенов и выплат.",
+                    "Learning expedition: no tokens or payouts.",
+                  )
+                : say(
+                    "Выполненная TEST-работа оплачивается отдельно от личного счёта.",
+                    "Completed TEST work is paid separately from personal scores.",
+                  )}
+            </p>
+          )}
+          {g.network !== "practice" && g.vault?.funded && (
             <button onClick={onWallet}>
               <Wallet size={19} />
               {say("Проверить выплаты", "Check payouts")}

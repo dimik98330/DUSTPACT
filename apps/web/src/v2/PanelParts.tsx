@@ -69,7 +69,6 @@ export function CopyField({
           ref={input}
           readOnly
           value={value}
-          onFocus={(e) => e.currentTarget.select()}
         />
       </label>
       <button
@@ -118,7 +117,14 @@ export function OperationNotice({
   language: string;
 }) {
   const say = (ru: string, en: string) => (language === "en" ? en : ru);
-  if (!busy && !message && !transaction && !unknown) return null;
+  if (
+    !busy &&
+    !message &&
+    !unknown &&
+    (!transaction ||
+      ["Finalized", "Окончательно подтверждено"].includes(transaction))
+  )
+    return null;
   return (
     <div
       className="dp-operation"

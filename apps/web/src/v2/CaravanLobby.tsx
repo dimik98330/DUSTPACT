@@ -21,6 +21,7 @@ import {
   Package,
   RefreshCw,
   Settings2,
+  ExternalLink,
   UserPlus,
   UserRound,
   Wallet,
@@ -31,7 +32,7 @@ import { LanguageToggle, useI18n } from "../../../../packages/ui/src/i18n";
 import { EntryHelp, HelpDialog } from "./ExpeditionEntry";
 import type { GameView } from "./model";
 import { lobbyState } from "./lobby-state";
-import "./lobby.css";
+import { GAME_PROGRAM, explorerAccountUrl } from "./solana-links";
 export default function CaravanLobby({
   game: g,
   preview,
@@ -471,6 +472,52 @@ export default function CaravanLobby({
                 </div>
               )}
             </section>
+            {g.network !== "practice" && (
+              <section className="lobby-chain-card">
+                <span className="lobby-eyebrow">
+                  {say(
+                    "Проверка без доверия серверу",
+                    "Verify without trusting the server",
+                  )}
+                </span>
+                <h3>
+                  {say(
+                    "Матч уже записан в Solana",
+                    "This match already lives on Solana",
+                  )}
+                </h3>
+                <p>
+                  {say(
+                    "Программа фиксирует состав, готовность и результат каждой встречи. Любой может сверить матч и адрес программы в Explorer.",
+                    "The program records the roster, readiness and every encounter result. Anyone can verify the match and the program address in Explorer.",
+                  )}
+                </p>
+                <code title={g.match}>{g.match}</code>
+                <div className="lobby-chain-links">
+                  <a
+                    href={explorerAccountUrl(g.match, g.network) ?? "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink size={15} />
+                    {say("Матч в Explorer", "Match in Explorer")}
+                  </a>
+                  <a
+                    href={
+                      explorerAccountUrl(
+                        GAME_PROGRAM[g.version],
+                        g.network,
+                      ) ?? "#"
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink size={15} />
+                    {say("Программа игры", "Game program")}
+                  </a>
+                </div>
+              </section>
+            )}
           </aside>
         </div>
       </main>

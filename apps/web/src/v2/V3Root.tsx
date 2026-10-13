@@ -12,6 +12,7 @@ import Modal from "./Modal";
 import type { GameController } from "./model";
 import { createPracticeController } from "./practice-v3";
 import ExpeditionEntry, { type EntryMode } from "./ExpeditionEntry";
+import { friendlyError } from "./friendly-error";
 import { useI18n } from "../../../../packages/ui/src/i18n";
 import "../v2.css";
 
@@ -28,7 +29,8 @@ export default function V3Root({ onExit }: { onExit(): void }) {
   const say = (ru: string, en: string) => (language === "en" ? en : ru);
   const params = new URLSearchParams(location.search),
     native = params.get("mode") !== "practice";
-  const network = params.get("cluster") === "devnet" ? "devnet" : "local";
+  const staticHosting = import.meta.env.VITE_DUSTPACT_STATIC === "1";
+  const network = params.get("cluster") === "devnet" || (staticHosting && params.get("cluster") !== "local") ? "devnet" : "local";
   const matchParam = params.get("match")?.trim() || undefined;
   const resumeCount = Number(params.get("resume_agents"));
   const resumeAgents =
@@ -46,7 +48,7 @@ export default function V3Root({ onExit }: { onExit(): void }) {
   const [controller, setController] = useState<GameController | null>(null);
   const [error, setError] = useState("");
   const [entryMode, setEntryMode] = useState<EntryMode>(
-    network === "devnet" || params.get("agents") === "0" ? "friends" : "agents",
+    staticHosting && !matchParam ? "learn" : network === "devnet" || params.get("agents") === "0" ? "friends" : "agents",
   );
   const [startStatus, setStartStatus] = useState("");
   useEffect(() => {
@@ -225,7 +227,7 @@ export default function V3Root({ onExit }: { onExit(): void }) {
               "Could not open the expedition",
             )}
           </h2>
-          <p>{error}</p>
+          <p>{friendlyError(error, language)}</p>
           <button className="v2-primary" onClick={onExit}>
             {t("Вернуться к игре")}
           </button>

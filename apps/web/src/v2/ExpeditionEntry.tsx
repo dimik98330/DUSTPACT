@@ -30,7 +30,8 @@ import {
   X,
 } from "lucide-react";
 import { LanguageToggle, useI18n } from "../../../../packages/ui/src/i18n";
-import "./entry.css";
+import { friendlyError } from "./friendly-error";
+import "./ui.css";
 const Preview = lazy(() => import("./Scene"));
 export type EntryMode = "agents" | "friends" | "learn";
 export default function ExpeditionEntry({
@@ -287,7 +288,7 @@ export default function ExpeditionEntry({
                   "Could not open the expedition",
                 )}
               </b>
-              <p>{error}</p>
+              <p>{friendlyError(error, language)}</p>
               <span>
                 {say(
                   "Проверь подключение и попробуй ещё раз. Обучение работает без сервера.",
@@ -344,7 +345,7 @@ export default function ExpeditionEntry({
           <div className="entry-world">
             <img
               className="entry-art-fallback"
-              src="/art/dustroad.png"
+              src={`${import.meta.env.BASE_URL}art/dustroad.png`}
               alt=""
             />
             <Suspense fallback={null}>
@@ -360,6 +361,64 @@ export default function ExpeditionEntry({
               {say("Колодец → мост → город", "Well → bridge → city")}
             </span>
           </div>
+        </section>
+        <section
+          className="entry-solana"
+          aria-label={say("Зачем здесь Solana", "Why Solana is here")}
+        >
+          <span className="dp-kicker">
+            {say("Зачем здесь Solana", "Why Solana is here")}
+          </span>
+          <h2>
+            {say(
+              "Доверие, которое нельзя переписать задним числом",
+              "Trust that cannot be rewritten after the fact",
+            )}
+          </h2>
+          <div className="entry-solana-grid">
+            <article>
+              <span className="entry-solana-icon">
+                <LockKeyhole size={22} />
+              </span>
+              <b>{say("Печать пакта", "A sealed pact")}</b>
+              <p>
+                {say(
+                  "Принятый договор закрепляет вклады и работу обеих сторон. Передумать в одиночку уже нельзя — программа проверяет те же условия при расчёте.",
+                  "An accepted pact binds both sides' supplies and work. Neither side can quietly change it — the program checks the same terms at settlement.",
+                )}
+              </p>
+            </article>
+            <article>
+              <span className="entry-solana-icon">
+                <Wallet size={22} />
+              </span>
+              <b>{say("Эскроу за работу", "Escrow for work")}</b>
+              <p>
+                {say(
+                  "Оплачиваемые задания держат тестовые USDC в хранилище программы и выплачивают исполнителю только за подтверждённый результат встречи.",
+                  "Paid jobs hold test USDC in the program vault and pay the provider only for a recorded encounter result.",
+                )}
+              </p>
+            </article>
+            <article>
+              <span className="entry-solana-icon">
+                <ShieldCheck size={22} />
+              </span>
+              <b>{say("Проверяемая история", "Verifiable history")}</b>
+              <p>
+                {say(
+                  "Каждая встреча оставляет квитанцию: журнал перепроверяет всю историю независимым расчётом, а матч и программу можно открыть в Solana Explorer.",
+                  "Every encounter leaves a receipt: the journal replays the whole history independently, and the match and program open in Solana Explorer.",
+                )}
+              </p>
+            </article>
+          </div>
+          <p className="entry-solana-note">
+            {say(
+              "Для кого: команды 4–6 друзей и сообщества, которым нужен проверяемый общий результат. Обучение работает без кошелька. В тестовой Solana-сети средства не имеют денежной стоимости.",
+              "For crews of 4–6 friends and communities that want a verifiable shared result. Learning needs no wallet. Assets on the test Solana network have no monetary value.",
+            )}
+          </p>
         </section>
       </main>
       {help && (
@@ -394,266 +453,374 @@ export function EntryHelp({
   onLearn(): void;
 }) {
   const say = (ru: string, en: string) => (language === "en" ? en : ru);
-  const steps =
-    kind === "rules"
-      ? [
-          {
-            icon: Box,
-            title: say("Собери ресурсы", "Gather supplies"),
-            body: say(
-              "Вода помогает выжить, инструменты — строить. Груз добудешь по пути.",
-              "Water keeps you alive; tools let you build. Earn cargo along the way.",
-            ),
-          },
-          {
-            icon: Handshake,
-            title: say("Договорись о помощи", "Agree on help"),
-            body: say(
-              "Обменяйся запасами или закрепи чужой вклад пактом.",
-              "Swap supplies or bind a partner’s contribution with a pact.",
-            ),
-          },
-          {
-            icon: Route,
-            title: say("Выбери свой ход", "Choose your action"),
-            body: say(
-              "Одно действие за встречу: добыча, ремонт, охрана или доставка.",
-              "One action per encounter: gather, repair, guard or deliver.",
-            ),
-          },
-        ]
-      : [
-          {
-            icon: Handshake,
-            title: say("Приняли условия", "Agree"),
-            body: say(
-              "Каждый подтвердил свой вклад и результат.",
-              "Both confirm their inputs and output.",
-            ),
-          },
-          {
-            icon: LockKeyhole,
-            title: say("Вклады в резерве", "Reserve"),
-            body: say(
-              "Эти ресурсы и работа уже заняты пактом.",
-              "The pact locks those supplies and work.",
-            ),
-          },
-          {
-            icon: ShieldCheck,
-            title: say("Работа закреплена", "Execute"),
-            body: say(
-              "Другой клиент может завершить исполнение.",
-              "Another client can complete execution.",
-            ),
-          },
-        ];
+  const rules = kind === "rules";
+  const steps = rules
+    ? [
+        {
+          icon: Route,
+          title: say("Посмотри задачу", "Read the situation"),
+          body: say(
+            "У колодца нужна вода, у моста — ремонт. На каждой встрече новая задача.",
+            "The well needs water; the bridge needs repair. Each encounter brings a new problem.",
+          ),
+        },
+        {
+          icon: Handshake,
+          title: say("Найди партнёра", "Find a partner"),
+          body: say(
+            "Не хватает запасов? Обменяйся ими или предложи пакт: вклад в обмен на работу и результат.",
+            "Short on supplies? Trade, or offer a pact: a contribution in return for work and output.",
+          ),
+        },
+        {
+          icon: Check,
+          title: say("Подтверди ход", "Confirm your plan"),
+          body: say(
+            "Выбери действие и нажми «Мой план готов». Если игра просит подписи, подтверди фиксацию и раскрытие хода.",
+            "Choose an action and select “My plan is ready”. If the game asks for signatures, confirm the commit and reveal steps.",
+          ),
+        },
+      ]
+    : [
+        {
+          icon: Handshake,
+          title: say("Оба согласны", "Both agree"),
+          body: say(
+            "Пакт действует после принятия условий.",
+            "A pact starts when its terms are accepted.",
+          ),
+        },
+        {
+          icon: LockKeyhole,
+          title: say("Вклад занят", "Inputs reserved"),
+          body: say(
+            "Ресурсы и действие нельзя потратить дважды.",
+            "Supplies and work cannot be spent twice.",
+          ),
+        },
+        {
+          icon: ShieldCheck,
+          title: say("Результат проверяем", "Output verifiable"),
+          body: say(
+            "Исполнение следует правилам программы Solana.",
+            "Execution follows the Solana program’s rules.",
+          ),
+        },
+      ];
   return (
     <HelpDialog
       close={close}
+      eyebrow={
+        rules
+          ? say("Как играть", "How to play")
+          : say("Зачем Solana", "Why Solana")
+      }
       title={
-        kind === "rules"
-          ? say("Довези караван до города", "Bring the caravan to the city")
-          : say("Пакт закрепляет помощь", "A pact binds cooperation")
+        rules
+          ? say("Вместе — до города", "Reach the city together")
+          : say(
+              "Как работает пакт",
+              "How a pact works",
+            )
       }
     >
-      {kind === "rules" ? (
-        <div className="help-objective">
-          <span className="help-objective-icon">
-            <Compass size={31} />
-          </span>
-          <div>
-            <span>{say("Общая цель", "Shared goal")}</span>
-            <strong>
-              {say(
-                "Караван доехал. Груз доставлен.",
-                "Caravan alive. Cargo delivered.",
-              )}
-            </strong>
-          </div>
-          <span className="help-encounters">
-            {say("6 встреч", "6 encounters")}
-          </span>
-        </div>
-      ) : (
-        <section
-          className="help-example"
-          aria-label={say("Пример пакта у колодца", "Example well pact")}
-        >
-          <div className="help-example-heading">
-            <Droplets size={19} />
-            <span>
-              {say("Пример: восстановить колодец", "Example: restore the well")}
-            </span>
-          </div>
-          <div className="help-parties">
-            <div className="help-party">
-              <span className="help-person">
-                <UserRound size={20} />
-                {say("Ты", "You")}
-              </span>
-              <div className="help-supply">
-                <Droplets size={29} />
-                <strong>2</strong>
-                <span>{say("воды", "water")}</span>
-              </div>
-            </div>
-            <span className="help-combine" aria-label={say("плюс", "plus")}>
-              +
-            </span>
-            <div className="help-party">
-              <span className="help-person">
-                <UserRound size={20} />
-                {say("Тимур", "Timur")}
-              </span>
-              <div className="help-supply">
-                <Wrench size={27} />
-                <strong>1</strong>
-                <span>{say("инструмент", "tool")}</span>
-              </div>
-              <span className="help-work">
-                <Hammer size={15} />
-                {say("выполняет ремонт", "performs the repair")}
-              </span>
-            </div>
-          </div>
-          <div className="help-production">
-            <ArrowDown size={20} />
-            <div>
-              <span>{say("Результат производства", "Production output")}</span>
-              <strong>
-                {say("4 воды тебе + 4 Тимуру", "4 water for you + 4 for Timur")}
-              </strong>
-            </div>
-            <Droplets size={28} />
-          </div>
-        </section>
-      )}
-      <ol
-        className={`help-step-list ${kind === "solana" ? "help-step-list-compact" : ""}`}
+      <div
+        className={
+          rules ? "help-guide help-guide-rules" : "help-guide help-guide-pact"
+        }
       >
-        {steps.map((step, i) => (
-          <li key={i}>
-            <span className="help-step-icon">
-              <step.icon size={24} />
-              <small>{i + 1}</small>
-            </span>
-            <div>
+        {rules ? (
+          <>
+            <section
+              className="help-goal"
+              aria-label={say("Цель экспедиции", "Expedition goal")}
+            >
+              <span className="help-goal-icon">
+                <Compass size={30} aria-hidden="true" />
+              </span>
+              <div>
+                <strong>
+                  {say(
+                    "Сохрани караван. Доставь груз.",
+                    "Keep the caravan alive. Deliver cargo.",
+                  )}
+                </strong>
+                <p>
+                  {say(
+                    "6 встреч, общие опасности и свой интерес у каждого. В начале груза нет — его предстоит добыть.",
+                    "Six encounters, shared dangers and your own interests. Start with no cargo and earn it along the way.",
+                  )}
+                </p>
+              </div>
+            </section>
+            <div
+              className="help-resources"
+              aria-label={say("Запасы каравана", "Caravan supplies")}
+            >
+              <span>
+                <Droplets size={19} aria-hidden="true" />
+                <b>{say("Вода", "Water")}</b>
+                {say("для пути", "for the journey")}
+              </span>
+              <span>
+                <Wrench size={19} aria-hidden="true" />
+                <b>{say("Инструменты", "Tools")}</b>
+                {say("для работ", "for work")}
+              </span>
+              <span>
+                <Box size={19} aria-hidden="true" />
+                <b>{say("Груз", "Cargo")}</b>
+                {say("для доставки", "for delivery")}
+              </span>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="help-lead">
+              {say(
+                "Обещание можно нарушить. Пакт совместного проекта резервирует точные ресурсы и действие партнёра в Solana.",
+                "A promise can be broken. A joint-project pact reserves exact supplies and a partner’s action in Solana.",
+              )}
+            </p>
+            <section className="help-deal" aria-labelledby="help-deal-title">
+              <div className="help-deal-heading">
+                <span className="help-deal-icon">
+                  <Droplets size={22} aria-hidden="true" />
+                </span>
+                <div>
+                  <span className="help-kicker">
+                    {say("Пример первой сделки", "Your first pact")}
+                  </span>
+                  <h3 id="help-deal-title">
+                    {say("Восстановить колодец", "Restore the well")}
+                  </h3>
+                </div>
+              </div>
+              <div className="help-deal-parties">
+                <div className="help-deal-party">
+                  <span className="help-deal-person">
+                    <UserRound size={18} aria-hidden="true" />
+                    {say("Ты вкладываешь", "You contribute")}
+                  </span>
+                  <strong>
+                    <Droplets size={24} aria-hidden="true" />
+                    {say("2 воды", "2 water")}
+                  </strong>
+                  <span>{say("В общий проект", "To the joint project")}</span>
+                </div>
+                <span
+                  className="help-deal-plus"
+                  aria-label={say("плюс", "plus")}
+                >
+                  +
+                </span>
+                <div className="help-deal-party">
+                  <span className="help-deal-person">
+                    <UserRound size={18} aria-hidden="true" />
+                    {say("Тимур вкладывает", "Timur contributes")}
+                  </span>
+                  <strong>
+                    <Wrench size={24} aria-hidden="true" />
+                    {say("1 инструмент", "1 tool")}
+                  </strong>
+                  <span>
+                    <Hammer size={16} aria-hidden="true" />
+                    {say("И выполняет ремонт", "And performs the repair")}
+                  </span>
+                </div>
+              </div>
+              <div className="help-deal-result">
+                <ArrowDown size={21} aria-hidden="true" />
+                <div>
+                  <span>
+                    {say("Колодец даёт 8 воды", "The well produces 8 water")}
+                  </span>
+                  <strong>
+                    {say("4 тебе · 4 Тимуру", "4 for you · 4 for Timur")}
+                  </strong>
+                </div>
+                <span className="help-deal-split">
+                  <Droplets size={24} aria-hidden="true" />
+                </span>
+              </div>
+            </section>
+          </>
+        )}
+        <ol
+          className="help-flow"
+          aria-label={
+            rules
+              ? say("Три шага на каждой встрече", "Three steps each encounter")
+              : say("Как работает пакт", "How a pact works")
+          }
+        >
+          {steps.map((step, i) => (
+            <li key={step.title}>
+              <div className="help-flow-top">
+                <span className="help-step-number">0{i + 1}</span>
+                <step.icon size={22} aria-hidden="true" />
+              </div>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
+            </li>
+          ))}
+        </ol>
+        {rules ? (
+          <section className="help-finale" aria-labelledby="help-finale-title">
+            <div className="help-section-heading">
+              <h3 id="help-finale-title">
+                {say(
+                  "У ворот — общий риск, личный выбор",
+                  "At the gates: shared risk, your choice",
+                )}
+              </h3>
+              <p>
+                {say(
+                  "Один участник не делает всё сразу.",
+                  "One player cannot do everything at once.",
+                )}
+              </p>
             </div>
-          </li>
-        ))}
-      </ol>
-      {kind === "rules" ? (
-        <>
-          <div className="help-city-choice">
-            <span>
-              {say("У городских ворот выбери одно", "At the city, choose one")}
-            </span>
-            <div>
-              <span>
-                <Box size={19} />
-                {say("Доставить", "Deliver")}
-              </span>
-              <b aria-hidden="true">/</b>
-              <span>
-                <ShieldCheck size={19} />
-                {say("Охранять", "Guard")}
-              </span>
-              <b aria-hidden="true">/</b>
-              <span>
-                <Hammer size={19} />
-                {say("Заработать", "Earn")}
-              </span>
-            </div>
+            <ul className="help-final-roles">
+              <li>
+                <Box size={20} aria-hidden="true" />
+                <span>
+                  <b>{say("Доставить", "Deliver")}</b>
+                  {say(
+                    "Отдать свой груз городу",
+                    "Give your cargo to the city",
+                  )}
+                </span>
+              </li>
+              <li>
+                <ShieldCheck size={20} aria-hidden="true" />
+                <span>
+                  <b>{say("Охранять", "Guard")}</b>
+                  {say(
+                    "Защитить опасный обход",
+                    "Protect the dangerous detour",
+                  )}
+                </span>
+              </li>
+              <li>
+                <Hammer size={20} aria-hidden="true" />
+                <span>
+                  <b>{say("Заработать", "Earn")}</b>
+                  {say("Получить личный груз", "Earn cargo for yourself")}
+                </span>
+              </li>
+            </ul>
+          </section>
+        ) : (
+          <div className="help-assurance">
+            <ShieldCheck size={23} aria-hidden="true" />
+            <p>
+              <strong>
+                {say(
+                  "Отключение не отменяет принятый вклад.",
+                  "Disconnecting does not cancel an accepted contribution.",
+                )}
+              </strong>
+              {say(
+                "Другой клиент может завершить исполнение без нашего сервера. Победа каравана всё ещё зависит от команды.",
+                "Another client can finish execution without our server. The crew still has to earn its victory.",
+              )}
+            </p>
           </div>
-          <div className="help-score">
+        )}
+        <details className="help-disclosure">
+          <summary>
             <span>
-              {say("Личный счёт при прибытии", "Your score on arrival")}
+              {rules ? (
+                <Box size={18} aria-hidden="true" />
+              ) : (
+                <Wallet size={18} aria-hidden="true" />
+              )}
+              {rules
+                ? say(
+                    "Как считается личный результат?",
+                    "How is my score calculated?",
+                  )
+                : say("Что я разрешаю подписью?", "What am I authorizing?")}
             </span>
+            <ChevronDown size={18} aria-hidden="true" />
+          </summary>
+          {rules ? (
             <div>
-              <span>
-                <b>3 ×</b>
-                <Box size={17} />
-                {say("груз", "cargo")}
-              </span>
-              <b>+</b>
-              <span>{say("доставка", "delivery")}</span>
-              <b>+</b>
-              <span>{say("вклад", "contribution")}</span>
+              <p>
+                <b>
+                  {say(
+                    "3 × оставшийся груз + доставка + вклад в работу.",
+                    "3 × remaining cargo + cargo delivered + work contribution.",
+                  )}
+                </b>
+              </p>
+              <p>
+                {say(
+                  "Личный счёт сохраняется, если караван прибыл и ты не пропустил ход. Иначе он равен нулю. Выполненные оплачиваемые задания проверяются отдельно.",
+                  "Keep your personal score if the caravan arrives and you have not missed a move. Otherwise it is zero. Completed paid jobs are checked separately.",
+                )}
+              </p>
             </div>
-          </div>
-          <p className="help-short-note">
-            {say(
-              "Караван не прибыл или ты пропустил ход — личный счёт 0.",
-              "If the caravan fails or you miss a move, your personal score is 0.",
-            )}
-          </p>
+          ) : (
+            <div>
+              <p>
+                {say(
+                  "Подпись одобряет условия договора. Обычный обмен исполняется сразу и не занимает твой ход. Ограниченная игровая сессия действует только в этом матче и не может списывать SOL или USDC кошелька.",
+                  "A signature approves the pact terms. A simple trade executes immediately and leaves your action free. A limited game session applies only to this match and cannot debit your wallet’s SOL or USDC.",
+                )}
+              </p>
+              <p>
+                {say(
+                  "Внести тестовые USDC в оплачиваемую миссию можно только с отдельного согласия владельца. В обучении блокчейн и кошелёк не используются.",
+                  "Funding a paid mission with test USDC requires separate owner consent. The tutorial uses neither a blockchain nor a wallet.",
+                )}
+              </p>
+            </div>
+          )}
+        </details>
+        <footer className="help-guide-footer">
           <button
             className="entry-primary help-learn-button"
             type="button"
             onClick={onLearn}
           >
-            <BookOpen size={20} />
-            {say("Пройти обучение", "Start the tutorial")}
-            <ArrowRight size={21} />
+            <BookOpen size={20} aria-hidden="true" />
+            {rules
+              ? say("Попробовать с подсказками", "Try with guidance")
+              : say("Попробовать первый пакт", "Try your first pact")}
+            <ArrowRight size={20} aria-hidden="true" />
           </button>
-        </>
-      ) : (
-        <>
-          <div className="help-guarantee">
-            <ShieldCheck size={25} />
-            <div>
-              <strong>
-                {say(
-                  "Партнёр отключился? Работа остаётся.",
-                  "Partner disconnected? The work remains.",
-                )}
-              </strong>
-              <span>
-                {say(
-                  "Пакт закрепляет вклад, но не гарантирует победу каравана.",
-                  "A pact binds a contribution, not a caravan victory.",
-                )}
-              </span>
-            </div>
-          </div>
-          <details className="help-wallet-detail">
-            <summary>
-              <Wallet size={18} />
-              {say("Что разрешает подпись?", "What does a signature allow?")}
-              <ChevronDown size={17} />
-            </summary>
-            <p>
-              {say(
-                "Она одобряет условия пакта. Игровая сессия не может списывать токены кошелька. Оплачиваемое задание требует отдельного согласия.",
-                "It approves the pact terms. A game session cannot debit wallet tokens. Paid missions require separate consent.",
-              )}
-            </p>
-          </details>
-        </>
-      )}
+          <span>
+            {say(
+              "Без кошелька · в своём темпе",
+              "No wallet · at your own pace",
+            )}
+          </span>
+        </footer>
+      </div>
     </HelpDialog>
   );
 }
 
 export function HelpDialog({
   title,
+  eyebrow,
   children,
   close,
 }: {
   title: string;
+  eyebrow?: string;
   children: ReactNode;
   close(): void;
 }) {
   const ref = useRef<HTMLDivElement>(null),
-    button = useRef<HTMLButtonElement>(null),
+    heading = useRef<HTMLHeadingElement>(null),
     previous = useRef<HTMLElement | null>(
       document.activeElement as HTMLElement,
     );
   useEffect(() => {
-    button.current?.focus();
+    heading.current?.focus({ preventScroll: true });
     const old = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
@@ -679,12 +846,21 @@ export function HelpDialog({
         if (e.key === "Tab") {
           const items = [
             ...ref.current!.querySelectorAll<HTMLElement>(
-              "button,a[href],input,summary",
+              "button,a[href],input,select,textarea,summary,[tabindex]",
             ),
-          ].filter((el) => el.getClientRects().length);
+          ].filter(
+            (el) =>
+              el.tabIndex >= 0 &&
+              !el.matches(":disabled") &&
+              el.getClientRects().length,
+          );
           const first = items[0],
             last = items.at(-1);
-          if (e.shiftKey && document.activeElement === first) {
+          if (
+            e.shiftKey &&
+            (document.activeElement === first ||
+              document.activeElement === heading.current)
+          ) {
             e.preventDefault();
             last?.focus();
           } else if (!e.shiftKey && document.activeElement === last) {
@@ -695,9 +871,13 @@ export function HelpDialog({
       }}
     >
       <header>
-        <h2 id="entry-help-title">{title}</h2>
+        <div>
+          {eyebrow && <span className="help-kicker">{eyebrow}</span>}
+          <h2 ref={heading} id="entry-help-title" tabIndex={-1}>
+            {title}
+          </h2>
+        </div>
         <button
-          ref={button}
           type="button"
           className="entry-help-close"
           aria-label={language === "en" ? "Close" : "Закрыть"}

@@ -1251,7 +1251,7 @@ export async function createWorld(
   }
   async function loadActor(file: CharacterModel, offset: THREE.Vector3) {
     cb.onProgress("Загружаем персонажей и анимации");
-    const gltf = await loader.loadAsync(`/models/characters/${file}-game.glb`);
+    const gltf = await loader.loadAsync(`${import.meta.env.BASE_URL}models/characters/${file}-game.glb`);
     if (disposed) {
       disposeTree(gltf.scene);
       return null;
@@ -1329,7 +1329,7 @@ export async function createWorld(
       if (disposed) return;
     }
     cb.onProgress("Готовим караван");
-    const asset = await loader.loadAsync("/models/caravan.glb");
+    const asset = await loader.loadAsync(`${import.meta.env.BASE_URL}models/caravan.glb`);
     if (disposed) {
       disposeTree(asset.scene);
       return;

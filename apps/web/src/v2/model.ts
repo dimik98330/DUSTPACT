@@ -36,6 +36,7 @@ export type TxView = {
   feePayer?:string;sponsored?:boolean;
 };
 export type GameView = {
+  testFunding?: import('./test-funding').TestFunding;
   version: 2 | 3; match: string; network: "practice" | "local" | "devnet";
   stage: number; phase: number; hull: number; count: number; seat: number;
   seats: Seat[]; offers: Pact[]; history: Receipt[]; bridgeOpen: boolean;

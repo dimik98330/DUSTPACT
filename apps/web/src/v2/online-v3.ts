@@ -1,4 +1,5 @@
 import {completeAgentRoster} from './entry-bootstrap';
+import {inspectTestFunding,type TestFunding} from './test-funding';
 import { address, generateKeyPairSigner, type Address, type TransactionSigner } from "@solana/kit";
 import { V3Client, LOCAL_RPC_V3, PROGRAM_V3, VAULT_PROGRAM, USDC_MINT, SYSTEM, RULES_HASH, CONTENT_HASH, workContextBytes, privateMoveEnvelope, configBytes, reviewConfig, reviewOffer, reviewOfferIntent, prepareMove, snapshotReleasePolicy, recoveryBundle, verifyPrivateMoveCopy, verifyPrivateBackupCandidate, type ClientOptions, type GameV3, type Offer, type PreparedMove, type Mission, type Summary, type TransactionUpdate, type TrustedReleasePolicy } from "../../../../packages/solana-v3/src/index";
 import { localIdentity } from "../../../../packages/ui/src/local-identity";
@@ -62,6 +63,8 @@ export async function openOnline(options:OnlineOptions):Promise<GameController> 
 }
 export class OnlineController implements GameController {
   get ownerAvailable(){return !!this.game&&this.game.seats[this.seat]?.owner===this.owner.signer.address;} readonly recoveryAvailable=true;
+  private testFunding:TestFunding={status:"checking"};
+  private async checkFunding(){this.testFunding={status:"checking"};this.publish();this.testFunding=await inspectTestFunding(async()=> (await this.owner.rpc.getAccountInfo(USDC_MINT,{encoding:"base64",commitment:"confirmed"}).send()).value,async()=> (await this.owner.readTokenBalance(this.owner.signer.address,"confirmed")).amount??0n);this.alive();this.publish();}
   private game!:GameV3; private vault:Mission|null=null; private view!:GameView;
   private final:GameV3|null=null; private finalVault:Mission|null=null; private genesis=""; private listeners=new Set<()=>void>();
   private replay:Awaited<ReturnType<typeof verifyV3History>>|undefined; private replayKey='';
@@ -87,7 +90,7 @@ export class OnlineController implements GameController {
   snapshot=()=>this.view;
   subscribe=(f:()=>void)=>{this.listeners.add(f);return()=>this.listeners.delete(f);};
   private actor(){return this.session&&!this.sessionPaused?this.session:this.owner;}
-  async initialize(){this.genesis=await this.owner.rpc.getGenesisHash().send();await this.read();await this.restoreMove();this.schedule();await this.pump();}
+  async initialize(){this.genesis=await this.owner.rpc.getGenesisHash().send();await this.read();await this.checkFunding();await this.restoreMove();this.schedule();await this.pump();}
   private alive(){if(this.disposed)throw Error("Игровой контекст закрыт. / Game context closed.");}
   private async read(){
     const g=await this.owner.read(this.match);this.alive();
@@ -108,7 +111,7 @@ export class OnlineController implements GameController {
   private publish(){if(!this.game||this.disposed)return;const g=this.game;
     const offers=[...g.offers.filter(p=>p.status===1),...g.deals.slice(0,g.dealCount)];
     const history:Receipt[]=g.history.flatMap((h,i)=>!h.complete?[]:[projectReceipt(g,h,i,seat=>this.name(seat),this.final?.history[i])]);
-    this.view={version:3,match:this.match,network:this.network,stage:g.stage,phase:g.phase,hull:g.hull,count:g.count,seat:this.seat,seats:g.seats.slice(0,g.count).map((s,i)=>({owner:s.owner,name:this.name(i),npc:!!(g.npcMask&(1<<i)),resources:[...s.resources]as Bundle,reserved:[...s.reserved]as Bundle,support:s.support,delivered:s.delivered,forfeited:s.forfeited,seal:s.seal,bound:s.bound===255?null:s.bound,ready:g.phase===0?s.ready:s.planningReady,offerNonce:s.offerNonce,sessionQuota:s.quota})),offers:offers.map(p=>this.pact(p)),history,bridgeOpen:v3BridgeOpen(g.flags),committed:g.committed,revealed:g.revealed,seconds:Math.max(0,Number(g.deadline)-this.owner.chainNow()),revision:Number(g.revision),arrived:g.arrived,sessionActive:!!this.session,sessionPaused:this.sessionPaused,transaction:this.transaction,vault:this.vaultView(),preparedStatus:this.preparedStatus,replay:this.replay,fees:{enabled:!!this.fees,payer:this.fees?.feePayer},...(this.prepared?{preparedChoice:{action:this.prepared.action,route:this.prepared.route,delivery:this.prepared.delivery}}:{})};
+    this.view={testFunding:this.testFunding,version:3,match:this.match,network:this.network,stage:g.stage,phase:g.phase,hull:g.hull,count:g.count,seat:this.seat,seats:g.seats.slice(0,g.count).map((s,i)=>({owner:s.owner,name:this.name(i),npc:!!(g.npcMask&(1<<i)),resources:[...s.resources]as Bundle,reserved:[...s.reserved]as Bundle,support:s.support,delivered:s.delivered,forfeited:s.forfeited,seal:s.seal,bound:s.bound===255?null:s.bound,ready:g.phase===0?s.ready:s.planningReady,offerNonce:s.offerNonce,sessionQuota:s.quota})),offers:offers.map(p=>this.pact(p)),history,bridgeOpen:v3BridgeOpen(g.flags),committed:g.committed,revealed:g.revealed,seconds:Math.max(0,Number(g.deadline)-this.owner.chainNow()),revision:Number(g.revision),arrived:g.arrived,sessionActive:!!this.session,sessionPaused:this.sessionPaused,transaction:this.transaction,vault:this.vaultView(),preparedStatus:this.preparedStatus,replay:this.replay,fees:{enabled:!!this.fees,payer:this.fees?.feePayer},...(this.prepared?{preparedChoice:{action:this.prepared.action,route:this.prepared.route,delivery:this.prepared.delivery}}:{})};
     this.view.automaticPlanApproved=this.plannedStage===g.stage&&this.preparedStatus==='verified';
     for(const f of this.listeners)f();
   }
@@ -137,7 +140,7 @@ export class OnlineController implements GameController {
     }catch(e){return{ok:false,error:e instanceof Error?e.message:String(e)};}
     finally{if(timer)clearTimeout(timer);this.busy=false;if(!this.disposed)void this.pump();}
   }
-  refresh=async():Promise<Operation>=>{if(this.busy||this.polling)return{ok:false,error:"Синхронизация уже выполняется. / Sync already running."};this.polling=true;try{await this.owner.reconcilePending(this.match);if(this.session)await this.session.reconcilePending(this.match);await this.read();return{ok:true};}catch(e){return{ok:false,error:e instanceof Error?e.message:String(e)};}finally{this.polling=false;}};
+  refresh=async():Promise<Operation>=>{if(this.busy||this.polling)return{ok:false,error:"Синхронизация уже выполняется. / Sync already running."};this.polling=true;try{await this.checkFunding();await this.owner.reconcilePending(this.match);if(this.session)await this.session.reconcilePending(this.match);await this.read();return{ok:true};}catch(e){return{ok:false,error:e instanceof Error?e.message:String(e)};}finally{this.polling=false;}};
   ready=()=>this.operation(async()=>{const reviewed=await reviewConfig(this.match,this.game);await this.actor().ready(this.match,reviewed);});
   start=()=>this.operation(async()=>{await this.owner.start(this.match);});
   private pactOperation(action:()=>Promise<void>){this.plannedStage=-1;this.publish();return this.operation(action);}
@@ -200,9 +203,11 @@ export class OnlineController implements GameController {
   private moveScope(g:GameV3,seat:number){return JSON.stringify({config:Array.from(configBytes(this.match,g)),stage:g.stage,seat,bound:g.seats[seat]?.bound,work:Array.from(workContextBytes(g,seat))});}
   importMove=(json:string)=>this.operation(async()=>{if(json.length>16384)throw Error("Move copy too large");const p=await this.checkMove(json);this.persistMove(p);this.prepared=p;this.preparedStatus="verified";this.plannedStage=-1;});
   get canConfigureMission(){return this.game.phase===0&&this.ownerAvailable&&this.game.creator===this.owner.signer.address;}
-  get canFundMission(){return this.game.phase===0&&this.ownerAvailable&&!this.vault&&(this.canConfigureMission||this.game.mission!==SYSTEM&&this.game.missionRoster===this.game.roster);}
+  private get fundingContextAvailable(){return this.game.phase===0&&this.ownerAvailable&&!this.vault&&(this.canConfigureMission||this.game.mission!==SYSTEM&&this.game.missionRoster===this.game.roster);}
+  get canFundMission(){return this.testFunding.status==="ready"&&this.fundingContextAvailable;}
   fundMission=()=>this.operation(async()=>{
-    if(!this.canFundMission)throw Error('Only the lobby creator can configure a mission; another owner can fund an already pinned mission.');
+    if(!this.fundingContextAvailable)throw Error('Only the lobby creator can configure a mission; another owner can fund an already pinned mission.');
+    await this.checkFunding();if(this.testFunding.status!=="ready")throw Error("Тестовая оплата сейчас недоступна. Проверь сеть и тестовый баланс. / Test payment is unavailable. Check the network and test balance.");
     if(this.game.mission===SYSTEM||this.game.missionRoster!==this.game.roster){
       if(!this.canConfigureMission)throw Error('Ask the lobby creator to pin mission terms first.');
       await this.owner.configureMission(this.match,this.game.npcMask,true);

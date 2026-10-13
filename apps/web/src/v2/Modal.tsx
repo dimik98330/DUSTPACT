@@ -39,7 +39,7 @@ export default function Modal({
     const focusable = () =>
       [
         ...(panel?.querySelectorAll<HTMLElement>(
-          'button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]',
+          'button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,[tabindex="0"]',
         ) ?? []),
       ].filter((el) => el.getClientRects().length > 0);
     focusable()[0]?.focus();

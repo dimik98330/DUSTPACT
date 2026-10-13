@@ -10,9 +10,11 @@ import {
   ArrowRight,
   CheckCircle2,
   LockKeyhole,
+  RefreshCw,
 } from "lucide-react";
 import type { GameController, GameView, Operation } from "./model";
 import { CopyField, OperationNotice, PanelNav } from "./PanelParts";
+import RecoverySteps from "./RecoverySteps";
 export type WalletSection = "profile" | "fees" | "mission" | "recovery";
 type Props = {
   game: GameView;
@@ -482,6 +484,50 @@ export default function WalletPanel({
                 </button>
               )}
             </>
+          ) : g.network !== "practice" &&
+            g.phase === 0 &&
+            g.testFunding &&
+            g.testFunding.status !== "ready" ? (
+            <div className="dp-safe-note" role="status">
+              <div>
+                <h4>
+                  {g.testFunding.status === "checking"
+                    ? say("Проверяем тестовую оплату", "Checking test payments")
+                    : say(
+                        "Тестовая оплата недоступна",
+                        "Test payments unavailable",
+                      )}
+                </h4>
+                <p>
+                  {g.testFunding.status === "checking"
+                    ? say(
+                        "Читаем доступность средств напрямую из Solana.",
+                        "Reading test-fund availability directly from Solana.",
+                      )
+                    : g.testFunding.reason === "mint"
+                      ? say(
+                          "В этой сети тестовые USDC ещё не подготовлены. Экспедиция доступна без оплачиваемой миссии.",
+                          "Test USDC is not prepared on this network. You can play without a paid mission.",
+                        )
+                      : g.testFunding.reason === "balance"
+                        ? say(
+                            "На этом тестовом профиле недостаточно средств для депозита 20 TEST USDC. Экспедиция доступна бесплатно.",
+                            "This test profile lacks the funds for a 20 TEST USDC deposit. The expedition is free to play.",
+                          )
+                        : say(
+                            "Не удалось проверить средства. Повтори проверку соединения.",
+                            "Could not verify test funds. Check the connection again.",
+                          )}
+                </p>
+                <button
+                  disabled={blocked || g.testFunding.status === "checking"}
+                  onClick={onRefresh}
+                >
+                  <RefreshCw size={18} />
+                  {say("Проверить доступность", "Check availability")}
+                </button>
+              </div>
+            </div>
           ) : g.network !== "practice" && g.phase === 0 && c.canFundMission ? (
             <>
               {!review ? (
@@ -565,98 +611,16 @@ export default function WalletPanel({
         </section>
       )}
       {section === "recovery" && (
-        <section className="dp-card" data-recovery-panel tabIndex={-1}>
-          <span className="dp-kicker">
-            {say("Сохранить свой ход", "Keep your move safe")}
-          </span>
-          <h3>
-            {say(
-              "Продолжить без нашего сервера",
-              "Continue without our server",
-            )}
-          </h3>
-          <p>
-            {g.network === "practice"
-              ? say(
-                  "Обучение работает локально: пакет Solana здесь не нужен.",
-                  "Learning runs locally: no Solana recovery bundle is needed.",
-                )
-              : say(
-                  "Сохрани пакет после подготовки хода и ещё раз после отправки. Его можно открыть в независимом клиенте.",
-                  "Save a bundle after reviewing your move and again after submitting it. Open it in the independent client.",
-                )}
-          </p>
-          {g.network !== "practice" && (
-            <>
-              <p className="dp-safe-note">
-                <LockKeyhole size={19} />
-                {say(
-                  "Пакет содержит скрытый ход. Не публикуй его до раскрытия. Ключа кошелька в нём нет.",
-                  "The bundle contains your hidden move. Keep it private until reveal. It contains no wallet key.",
-                )}
-              </p>
-              <div className="dp-recovery-grid">
-                <article>
-                  <Download />
-                  <h4>{say("Полный пакет", "Full bundle")}</h4>
-                  <p>
-                    {say(
-                      "Ход и подписи незавершённых операций.",
-                      "Move and signatures of unresolved operations.",
-                    )}
-                  </p>
-                  <button
-                    className="dp-primary"
-                    disabled={!!busy}
-                    onClick={() => void exportRecovery()}
-                  >
-                    <Download size={18} />
-                    {say("Скачать пакет", "Download bundle")}
-                  </button>
-                  {recovery && (
-                    <a
-                      className="dp-link"
-                      href={recovery}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {say("Независимый клиент", "Independent client")}
-                      <ExternalLink size={17} />
-                    </a>
-                  )}
-                </article>
-                <article>
-                  <Upload />
-                  <h4>{say("Только исходный ход", "Original move only")}</h4>
-                  <p>
-                    {say(
-                      "Экспорт или импорт выбора для этого матча. Полный пакет импортируется в независимом клиенте.",
-                      "Export or import a choice for this match. Import full bundles in the independent client.",
-                    )}
-                  </p>
-                  <div className="dp-action-row">
-                    <button disabled={!!busy} onClick={exportMove}>
-                      {say("Скачать ход", "Download move")}
-                    </button>
-                    <label className="dp-file-button" aria-disabled={blocked}>
-                      <Upload size={18} />
-                      {say("Импортировать ход", "Import move")}
-                      <input
-                        type="file"
-                        accept="application/json,.json"
-                        disabled={blocked}
-                        onChange={(e) => {
-                          void importMove(e.target.files?.[0]);
-                          e.currentTarget.value = "";
-                        }}
-                      />
-                    </label>
-                  </div>
-                </article>
-              </div>
-            </>
-          )}
-        </section>
+        <RecoverySteps
+          game={g}
+          language={language}
+          busy={!!busy}
+          unknown={unknown}
+          recovery={recovery}
+          exportRecovery={exportRecovery}
+          exportMove={exportMove}
+          importMove={importMove}
+        />
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+**Играть онлайн:** [DUSTPACT](https://dimik98330.github.io/DUSTPACT/) — бесплатная 3D-экспедиция в режиме обучения, без кошелька. Сетевые матчи, договоры в Solana и эскроу требуют отдельного запуска Solana и сервисов, описанного ниже.
+
 <p align="center">
   <img src="docs/media/dustpact-cover.svg" alt="DUSTPACT — Один караван. Разные интересы." width="100%">
 </p>

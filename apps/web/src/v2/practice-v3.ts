@@ -1,3 +1,4 @@
+import { assetUrl } from "../asset-url";
 import { createV3State, loadV3Kernel, resolveV3, v3Input, advanceV3State, applyV3Barter, reservesV3, type V3State, type V3Deal } from "../../../../packages/engine/src/v3";
 import { chooseV3AgentMove, v3AgentOffers, v3AgentAccepts, type V3Personality } from "../../../../packages/engine/src/v3-bots";
 import { v3BridgeOpen, v3ProductionSlots, v3Rejection } from "../../../../packages/engine/src/v3-design";
@@ -12,7 +13,7 @@ type StoredPact=Pact&{reserves:[Bundle,Bundle]};
 const asDeal=(p:PactTerms):V3Deal=>({active:true,kind:p.kind,maker:p.maker,taker:p.taker,provider:p.provider,action:p.action,delivery:p.delivery,job:255,gives:structuredClone(p.gives)});
 const publicPact=(p:StoredPact):Pact=>({maker:p.maker,taker:p.taker,provider:p.provider,kind:p.kind,action:p.action,delivery:p.delivery,gives:structuredClone(p.gives),nonce:p.nonce,stage:p.stage,status:p.status,...(p.job===undefined||p.job===255?{}:{job:p.job})});
 export async function createPracticeController(count=4):Promise<GameController> {
-  await loadV3Kernel();const c=new PracticeController(count);await c.initialize();return c;
+  await loadV3Kernel(assetUrl('engine/rules-v3.wasm'));const c=new PracticeController(count);await c.initialize();return c;
 }
 class PracticeController implements GameController {
   readonly ownerAvailable=false;readonly recoveryAvailable=false;

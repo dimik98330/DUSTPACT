@@ -1,3 +1,5 @@
+**Play online:** [DUSTPACT](https://dimik98330.github.io/DUSTPACT/) — free 3D learning expedition, without a wallet. Multiplayer, onchain pacts and token escrow require the separate Solana/services setup described below.
+
 <p align="center">
   <img src="docs/media/dustpact-cover.svg" alt="DUSTPACT — One caravan. Different interests." width="100%">
 </p>

@@ -1,0 +1,33 @@
+/* Shared DUSTPACT interface tokens. Game HUD keeps its own variables. */
+:root {
+  --ui-bg: #ead9ae;
+  --ui-bg2: #f4e8c6;
+  --ui-panel: #fff8e2;
+  --ui-panel2: #f7ecd0;
+  --ui-ink: #3e2f22;
+  --ui-text: #57452e;
+  --ui-muted: #6d5c3c;
+  --ui-faint: #6d5c3c;
+  --ui-line: #dcc794;
+  --ui-line2: #b49b62;
+  --ui-green: #23834a;
+  --ui-green-d: #1f7a3f;
+  --ui-green-bg: #dff0da;
+  --ui-gold: #f4b942;
+  --ui-gold-d: #c98f1f;
+  --ui-gold-ink: #43300a;
+  --ui-clay: #c96f4a;
+  --ui-clay-d: #934e42;
+  --ui-water: #226674;
+  --ui-danger: #b3402e;
+  --ui-danger-bg: #fbe3d8;
+  --ui-warn-bg: #fbeecd;
+  --ui-warn-ink: #7a5510;
+  --ui-r: 20px;
+  --ui-wrap: 1240px;
+  --t-fast: 0.15s;
+  --t-med: 0.3s;
+  --ui-control-h: 48px;
+  --ui-ease: cubic-bezier(0.22, 0.68, 0, 1);
+  --ui-enter: 0.18s;
+}

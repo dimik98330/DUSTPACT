@@ -1,0 +1,482 @@
+@import '../../../../packages/ui/src/theme.css';
+
+/* V3 recovery shares the caravan palette without importing the game UI. */
+.recovery-v2 {
+  min-height: 100dvh;
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  font: 400 17px/1.65 Manrope, 'Segoe UI', sans-serif;
+  overflow-wrap: anywhere;
+  color-scheme: light;
+}
+
+.recovery-v2 :is(main, section, article, label, fieldset, div) {
+  min-width: 0;
+}
+
+.recovery-v2 header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px 28px;
+  padding: 24px max(24px, calc((100vw - var(--ui-wrap)) / 2));
+  border-bottom: 1px solid var(--ui-line);
+  background: var(--ui-panel);
+}
+
+.recovery-v2 header > b {
+  color: var(--ui-ink);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}
+
+.recovery-v2 header > span {
+  max-width: 28ch;
+  color: var(--ui-muted);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.recovery-v2 .language-toggle {
+  justify-self: end;
+}
+
+.recovery-v2 .language-toggle > legend {
+  margin-bottom: 6px;
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+
+.recovery-v2 .language-toggle > div {
+  gap: 8px;
+}
+
+.recovery-v2 main {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 48px 24px max(40px, env(safe-area-inset-bottom));
+}
+
+.recovery-v2 h1 {
+  max-width: 22ch;
+  margin: 0 0 18px;
+  color: var(--ui-ink);
+  font-size: clamp(28px, 4.2vw, 46px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.recovery-v2 main > p:first-of-type {
+  max-width: 76ch;
+  margin: 0 0 30px;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.recovery-v2 section {
+  margin: 24px 0;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-r);
+  background: var(--ui-panel);
+  box-shadow: 0 6px 20px rgb(86 62 27 / 5%);
+}
+
+.recovery-v2 h2 {
+  margin: 0 0 20px;
+  color: var(--ui-ink);
+  font-size: clamp(23px, 2.6vw, 28px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -.035em;
+}
+
+.recovery-v2 h3 {
+  margin: 0 0 12px;
+  color: var(--ui-ink);
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -.025em;
+}
+
+.recovery-v2 p {
+  margin: 0 0 16px;
+}
+
+.recovery-v2 b {
+  color: var(--ui-ink);
+  font-weight: 700;
+}
+
+.recovery-v2 section > :last-child,
+.recovery-v2 article > :last-child {
+  margin-bottom: 0;
+}
+
+.recovery-v2 label {
+  display: block;
+  margin: 18px 0;
+  color: var(--ui-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.recovery-v2 input:not([type='file']),
+.recovery-v2 select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ui-control-h);
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--ui-line2);
+  border-radius: 12px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  font: 500 16px/1.4 Manrope, 'Segoe UI', sans-serif;
+  box-shadow: inset 0 2px 1px rgb(86 62 27 / 3%);
+}
+
+.recovery-v2 select {
+  padding-right: 32px;
+}
+
+.recovery-v2 input[type='file'] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px dashed var(--ui-line2);
+  border-radius: 12px;
+  background: var(--ui-panel2);
+  color: var(--ui-text);
+  font: 400 15px/1.5 Manrope, 'Segoe UI', sans-serif;
+}
+
+.recovery-v2 input[type='file']::file-selector-button {
+  min-height: 44px;
+  margin: 0 12px 4px 0;
+  padding: 9px 14px;
+  border: 1px solid var(--ui-line2);
+  border-radius: 9px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  font: 700 15px/1.4 Manrope, 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+
+.recovery-v2 button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: var(--ui-control-h);
+  padding: 12px 18px;
+  border: 1px solid var(--ui-line2);
+  border-radius: 12px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  box-shadow: 0 3px 0 var(--ui-line);
+  font: 700 15px/1.45 Manrope, 'Segoe UI', sans-serif;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.recovery-v2 button:hover:not(:disabled) {
+  border-color: var(--ui-green-d);
+  background: var(--ui-panel2);
+}
+
+.recovery-v2 :where(main > section:first-of-type) > button {
+  border-color: var(--ui-gold-d);
+  background: var(--ui-gold);
+  color: var(--ui-gold-ink);
+  box-shadow: 0 3px 0 var(--ui-gold-d);
+}
+
+.recovery-v2 :where(main > section:first-of-type) > button:hover:not(:disabled) {
+  background: var(--ui-gold);
+  filter: brightness(1.035);
+}
+
+.recovery-v2 button[aria-pressed='true'] {
+  border-color: var(--ui-green-d);
+  background: var(--ui-green-bg);
+  color: var(--ui-green-d);
+  box-shadow: 0 3px 0 var(--ui-green-d);
+}
+
+.recovery-v2 button[aria-pressed='true']:hover:not(:disabled) {
+  background: var(--ui-green-bg);
+}
+
+.recovery-v2 button:disabled {
+  border-color: var(--ui-line);
+  background: var(--ui-panel2);
+  color: var(--ui-muted);
+  box-shadow: none;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.recovery-v2 :is(input, select):disabled {
+  border-color: var(--ui-line);
+  background: var(--ui-panel2);
+  color: var(--ui-muted);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.recovery-v2 :is(button, input, select, a, summary):focus-visible {
+  outline: 2px solid var(--ui-green-d);
+  outline-offset: 3px;
+}
+
+.recovery-v2 .recovery-buttons,
+.recovery-v2 .recovery-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.recovery-v2 .recovery-choices {
+  padding: 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 15px;
+  background: var(--ui-panel2);
+}
+
+.recovery-v2 .recovery-choices > button {
+  flex: 1 1 170px;
+}
+
+.recovery-v2 code {
+  display: inline;
+  color: var(--ui-ink);
+  font: 500 13px/1.7 ui-monospace, Consolas, monospace;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.recovery-v2 section > code {
+  display: block;
+  max-width: 100%;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+  background: var(--ui-panel2);
+}
+
+.recovery-v2 .recovery-error {
+  padding: 18px 20px;
+  border: 1px solid var(--ui-danger);
+  border-left-width: 4px;
+  border-radius: 12px;
+  background: var(--ui-danger-bg);
+  color: var(--ui-danger);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.recovery-v2 .recovery-warning,
+.recovery-v2 .v2-warning {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  background: var(--ui-warn-bg);
+  color: var(--ui-warn-ink);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.recovery-v2 article {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid var(--ui-line);
+  border-radius: 15px;
+  background: var(--ui-panel2);
+}
+
+.recovery-v2 small {
+  display: block;
+  margin-top: 18px;
+  color: var(--ui-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.recovery-v2 .v2-bundle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 6px 0;
+  color: var(--ui-ink);
+}
+
+.recovery-v2 .v2-bundle > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recovery-v2 .v2-bundle svg {
+  width: 19px;
+  height: 19px;
+  color: var(--ui-water);
+}
+
+.recovery-v2 .v2-city-contribution {
+  margin: 20px 0;
+  padding: 22px;
+  background: var(--ui-panel2);
+  box-shadow: none;
+}
+
+.recovery-v2 .v2-city-contribution p {
+  font-size: 16px;
+}
+
+.recovery-v2 .v2-field input {
+  max-width: min(240px, 100%);
+}
+
+.recovery-v2 main > details {
+  margin: 24px 0;
+  padding: 8px 22px;
+  border: 1px solid var(--ui-line2);
+  border-radius: 15px;
+  background: var(--ui-bg2);
+}
+
+.recovery-v2 summary {
+  min-height: var(--ui-control-h);
+  padding: 12px 0;
+  color: var(--ui-ink);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.recovery-v2 details[open] > summary {
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+.recovery-v2 a {
+  color: var(--ui-green-d);
+  text-underline-offset: .2em;
+}
+
+.recovery-v2 footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ui-line2);
+  color: var(--ui-muted);
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .recovery-v2 button {
+    transition: transform var(--t-fast) var(--ui-ease),
+      background-color var(--t-fast) var(--ui-ease),
+      border-color var(--t-fast) var(--ui-ease),
+      box-shadow var(--t-fast) var(--ui-ease);
+  }
+
+  .recovery-v2 button:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recovery-v2 *, .recovery-v2 *::before, .recovery-v2 *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .recovery-v2 header {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    padding: 20px;
+  }
+
+  .recovery-v2 header > span {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .recovery-v2 header > fieldset {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+
+  .recovery-v2 .language-toggle button {
+    min-width: 76px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .recovery-v2 main {
+    padding: 32px 16px max(30px, env(safe-area-inset-bottom));
+  }
+
+  .recovery-v2 .recovery-buttons > button {
+    flex: 1 1 240px;
+  }
+}
+
+@media (max-width: 440px) {
+  .recovery-v2 header {
+    grid-template-columns: 1fr;
+    padding: 18px 16px;
+  }
+
+  .recovery-v2 header > span,
+  .recovery-v2 header > fieldset {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .recovery-v2 .language-toggle {
+    justify-self: start;
+    margin-top: 8px;
+  }
+
+  .recovery-v2 section {
+    padding: 20px 16px;
+  }
+
+  .recovery-v2 .recovery-choices,
+  .recovery-v2 article,
+  .recovery-v2 .v2-city-contribution {
+    padding: 16px 12px;
+  }
+
+  .recovery-v2 .recovery-choices > button {
+    flex-basis: 100%;
+  }
+
+  .recovery-v2 main > section > button,
+  .recovery-v2 .v2-city-contribution > button {
+    width: 100%;
+  }
+}

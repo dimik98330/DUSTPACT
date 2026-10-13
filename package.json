@@ -44,7 +44,8 @@
     "test:rust": "cargo test -p dustpact-rules-v2 -p dustpact-rules-v3 --lib --locked",
     "test:native": "cargo test --workspace --lib --tests --locked -- --test-threads=1",
     "localnet:tokens": "node scripts/localnet-tokens.mjs",
-    "localnet:test": "node --test scripts/localnet-fixture.test.mjs"
+    "localnet:test": "node --test scripts/localnet-fixture.test.mjs",
+    "build:pages": "node scripts/build-pages.mjs"
   },
   "devDependencies": {
     "@types/node": "22.19.0",

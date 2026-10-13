@@ -41,7 +41,7 @@ export default function RecoveryV2App(){
  async function run(action:()=>Promise<unknown>){setError('');try{await action();}catch(e){setError(e instanceof Error?e.message:'Recovery operation failed');}}
  async function open(){if(opening)return;setOpening(true);setError('');let next:RecoveryV2Controller|undefined;
   try{next=new RecoveryV2Controller(address(match.trim()),rpc,{storage:sessionStorage,policies:publicRecoveryPolicies((import.meta.env as Record<string,unknown>).VITE_DUSTPACT_V2_RELEASE_POLICY)});
-   await loadV2Kernel('/engine/rules-v2.wasm');await next.refresh();setController(next);
+   await loadV2Kernel(`${import.meta.env.BASE_URL}engine/rules-v2.wasm`);await next.refresh();setController(next);
    const u=new URL(location.href);u.searchParams.set('version','2');u.searchParams.set('match',match.trim());history.replaceState(null,'',u);
   }catch(e){next?.dispose();setError(e instanceof Error?e.message:'Recovery connection failed');}finally{setOpening(false);}
  }
